@@ -7,3 +7,42 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+
+
+class Post(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    content = models.TextField(max_length=150)
+
+    def __str__(self):
+        return f"{self.user} posted: {self.content[:15]}"
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(max_length=50)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} commented on {self.post}: {self.content[:15]}"
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, blank=True, null=True, on_delete=models.CASCADE)
+    comment = models.ForeignKey(
+        Comment, blank=True, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} liked {self.post if self.post else self.comment}"
+
+
+class Follower(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="followee")
+    following_user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="follower")
+
+    def __str__(self):
+        return f"{self.user} is following {self.following_user}"
