@@ -15,7 +15,7 @@ class Post(models.Model):
     content = models.TextField(max_length=150)
 
     def __str__(self):
-        return f"{self.user} posted: {self.content[:15]}"
+        return self.content[:15]
 
 
 class Comment(models.Model):
@@ -24,7 +24,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user} commented on {self.post}: {self.content[:15]}"
+        return self.content[:15]
 
 
 class Like(models.Model):

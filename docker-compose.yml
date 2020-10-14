@@ -1,12 +1,19 @@
-version: '3'
-
+version: "3"
+   
 services:
-    db:
-        image: postgres
-
-    web:
-        build: .
-        volumes:
-            - .:/usr/src/app
-        ports:
-            - "8000:8000"
+  db:
+    image: postgres
+    # environment:
+    #   - POSTGRES_DB=social_network
+    #   - POSTGRES_USER=${POSTGRES_USER}
+    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - db
