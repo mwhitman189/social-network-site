@@ -37,6 +37,8 @@ class NetworkTestCase(TestCase):
         # Create likes
         l1 = Like.objects.create(user=u1, post=p2)
         l2 = Like.objects.create(user=u2, post=p2)
+        l3 = Like.objects.create(user=u1, post=p2)
+        l4 = Like.objects.create(user=u2, post=p4)
 
         # Create followers
         f1 = Follower.objects.create(user=u1, followed_user=u2)
@@ -56,9 +58,9 @@ class NetworkTestCase(TestCase):
 
     def test_valid_like(self):
         """ Check that a valid like is valid """
-        u = User.objects.get(username="Ronald")
+        u = User.objects.get(username="Dennis")
         p = Post.objects.get(
-            content="The same thing we do every night, Pinky...")
+            content="Try to take over the world?...")
         l = Like.objects.get(user=u, post=p)
         self.assertTrue(l.is_valid_like())
 
@@ -69,6 +71,22 @@ class NetworkTestCase(TestCase):
             content="The same thing we do every night, Pinky...")
         l = Like.objects.get(user=u, post=p)
         self.assertFalse(l.is_valid_like())
+
+    def test_valid_like_count(self):
+        """ Check that a valid like count (<2) is valid """
+        u = User.objects.get(username="Dennis")
+        p = Post.objects.get(
+            content="The same thing we do every night, Pinky...")
+        likes = Like.objects.filter(user=u, post=p)
+        self.assertLess(likes.count(), 2)
+
+    def test_invalid_like_count(self):
+        """ Check that an invalid like count (>1) is invalid """
+        u = User.objects.get(username="Ronald")
+        p = Post.objects.get(
+            content="The same thing we do every night, Pinky...")
+        likes = Like.objects.filter(user=u, post=p)
+        self.assertGreater(likes.count(), 1)
 
     def test_valid_follower(self):
         """ Check that a valid follower is valid """
