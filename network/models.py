@@ -21,7 +21,8 @@ class Post(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=50)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.content[:15]
@@ -33,6 +34,13 @@ class Like(models.Model):
         Post, blank=True, null=True, on_delete=models.CASCADE)
     comment = models.ForeignKey(
         Comment, blank=True, null=True, on_delete=models.CASCADE)
+
+    def is_valid_like(self):
+        item_type = self.comment
+        if self.post:
+            item_type = self.post
+
+        return self.user != item_type.user
 
     def __str__(self):
         item_type = self.comment
