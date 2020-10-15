@@ -29,13 +29,30 @@ class NetworkTestCase(TestCase):
             user=u2, content="No, Pinky. Try to take over the world!!!!")
 
         # Create comments
-        c1 = Comment.objects.create(user=u1, post=p2)
-        c2 = Comment.objects.create(user=u2, post=p3)
+        c1 = Comment.objects.create(user=u1, content="Woozle Wazzle?")
+        c2 = Comment.objects.create(
+            user=u2, post=p3, comment=c1)
         c3 = Comment.objects.create(user=u3, post=p2)
 
         # Create likes
         l1 = Like.objects.create(user=u1, post=p2)
         l2 = Like.objects.create(user=u2, post=p2)
+
+        # Create followers
+        f1 = Follower.objects.create(user=u1, followed_user=u2)
+        f2 = Follower.objects.create(user=u2, followed_user=u2)
+        f3 = Follower.objects.create(user=u1, followed_user=u3)
+
+    def test_valid_comment(self):
+        """ Check that a valid comment is valid """
+        c = Comment.objects.get(content="Woozle Wazzle?")
+        self.assertTrue(c.is_valid_comment())
+
+    def test_invalid_comment(self):
+        """ Check that an invalid comment is invalid """
+        c1 = Comment.objects.get(content="Woozle Wazzle?")
+        c2 = Comment.objects.get(comment=c1)
+        self.assertFalse(c2.is_valid_comment())
 
     def test_valid_like(self):
         """ Check that a valid like is valid """
@@ -43,7 +60,6 @@ class NetworkTestCase(TestCase):
         p = Post.objects.get(
             content="The same thing we do every night, Pinky...")
         l = Like.objects.get(user=u, post=p)
-
         self.assertTrue(l.is_valid_like())
 
     def test_invalid_like(self):
@@ -52,5 +68,17 @@ class NetworkTestCase(TestCase):
         p = Post.objects.get(
             content="The same thing we do every night, Pinky...")
         l = Like.objects.get(user=u, post=p)
-
         self.assertFalse(l.is_valid_like())
+
+    def test_valid_follower(self):
+        """ Check that a valid follower is valid """
+        u1 = User.objects.get(username="Ronald")
+        u2 = User.objects.get(username="Dennis")
+        f = Follower.objects.get(user=u1, followed_user=u2)
+        self.assertTrue(f.is_valid_follower())
+
+    def test_invalid_follower(self):
+        """ Check that an invalid follower is invalid """
+        u = User.objects.get(username="Dennis")
+        f = Follower.objects.get(user=u, followed_user=u)
+        self.assertFalse(f.is_valid_follower())
