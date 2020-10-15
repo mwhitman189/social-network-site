@@ -1,19 +1,44 @@
 version: "3"
-   
 services:
+  waitfordb:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - db 
+    command: db:5432
   db:
     image: postgres
-    # environment:
-    #   - POSTGRES_DB=social_network
-    #   - POSTGRES_USER=${POSTGRES_USER}
-    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=network
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
   web:
+    container_name: network
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/usr/src/app
     ports:
       - "8000:8000"
-    env_file: .env
     depends_on:
+      - waitfordb
       - db
+    volumes:
+      - .:/usr/src/app
+    tty: true
+    env_file: .env
+
+  # postgres:
+  #   container_name: postgres
+  #   ports:
+  #     - "5432:5432"
+  # web:
+  #   build: .
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - .:/usr/src/app
+  #   ports:
+  #     - "8000:8000"
+  #   env_file: .env
+  #   depends_on:
+  #     - db
