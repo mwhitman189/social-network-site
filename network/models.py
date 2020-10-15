@@ -13,6 +13,10 @@ class Post(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)
     content = models.TextField(max_length=150)
+    timestamp = models.DateTimeField(
+        auto_now_add=True, editable=False, null=False, blank=False)
+    edit_timestamp = models.DateTimeField(
+        auto_now=True, editable=False, null=False, blank=False)
 
     def __str__(self):
         return self.content[:15]
@@ -23,6 +27,10 @@ class Comment(models.Model):
     content = models.TextField(max_length=50)
     post = models.ForeignKey(
         Post, blank=True, null=True, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(
+        auto_now_add=True, editable=False, null=False, blank=False)
+    edit_timestamp = models.DateTimeField(
+        auto_now=True, editable=False, null=False, blank=False)
 
     def __str__(self):
         return self.content[:15]
@@ -56,6 +64,10 @@ class Follower(models.Model):
         User, on_delete=models.CASCADE, related_name="followee")
     following_user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="follower")
+    timestamp = models.DateTimeField(
+        auto_now_add=True, editable=False, null=False, blank=False)
+    edit_timestamp = models.DateTimeField(
+        auto_now=True, editable=False, null=False, blank=False)
 
     def __str__(self):
         return f"{self.user} is following {self.following_user}"
