@@ -78,4 +78,4 @@ class Follower(models.Model):
         return self.user != self.followed_user
 
     def __str__(self):
-        return self.user
+        return f"{self.user.username} is following {self.followed_user.username}"

@@ -44,6 +44,7 @@ class NetworkTestCase(TestCase):
         f1 = Follower.objects.create(user=u1, followed_user=u2)
         f2 = Follower.objects.create(user=u2, followed_user=u2)
         f3 = Follower.objects.create(user=u1, followed_user=u3)
+        f4 = Follower.objects.create(user=u3, followed_user=u2)
 
     def test_valid_comment(self):
         """ Check that a valid comment is valid """
@@ -100,3 +101,9 @@ class NetworkTestCase(TestCase):
         u = User.objects.get(username="Dennis")
         f = Follower.objects.get(user=u, followed_user=u)
         self.assertFalse(f.is_valid_follower())
+
+    def test_follower_count(self):
+        """ Check that a correct count of followers is found """
+        u = User.objects.get(username="Dennis")
+        followers = Follower.objects.filter(followed_user=u)
+        self.assertEqual(followers.count(), 3)
