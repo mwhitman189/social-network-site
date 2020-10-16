@@ -19,7 +19,7 @@ class Post(models.Model):
         auto_now=True, editable=False, null=False, blank=False)
 
     def __str__(self):
-        return self.content[:15]
+        return f"{self.content[:30]}..."
 
 
 class Comment(models.Model):
@@ -28,7 +28,7 @@ class Comment(models.Model):
     post = models.ForeignKey(
         Post, blank=True, null=True, on_delete=models.CASCADE)
     comment = models.ForeignKey(
-        'self', null=True, on_delete=models.CASCADE, related_name="+")
+        'self', blank=True, null=True, on_delete=models.CASCADE, related_name="+")
     timestamp = models.DateTimeField(
         auto_now_add=True, editable=False, null=False, blank=False)
     edit_timestamp = models.DateTimeField(
@@ -38,7 +38,7 @@ class Comment(models.Model):
         return self.post == None if self.comment else self.comment == None
 
     def __str__(self):
-        return self.content[:15]
+        return f"{self.content[:30]}..."
 
 
 class Like(models.Model):
