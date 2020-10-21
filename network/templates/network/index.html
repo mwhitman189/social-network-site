@@ -1,5 +1,23 @@
 {% extends "network/layout.html" %}
+{% load static %}
+
+{% block title %}h00ts | Home{% endblock %}
+
+{% block head %}
+    
+{% endblock %}
 
 {% block body %}
     TODO: List all posts from newest to oldest
+    <h1 class="title">Trending</h1>
+    <div class="posts-container">
+        {% for post in posts %}
+        <div class="post">
+            <div class="user">
+                <img src="{{post.user.avatar.url}}" />
+                <p class="username">{{post.user.username}}</p>
+            </div>{{post.content}}
+        </div>
+        {% endfor %}
+    </div>
 {% endblock %}

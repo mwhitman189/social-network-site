@@ -1,0 +1,28 @@
+$gray-light: #cfcfcf;
+$blue-med: #20a1f2;
+$blue-light: #8accf8;
+$white: #fff;
+
+
+.body {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.posts-container {
+    width: 100%;
+    height: 100%;
+}
+
+.post {
+    height: 100px;
+    width: auto;
+    background-color: $white;
+    padding: 20px;
+    margin: 5px 0 0 0;
+    border: 1px solid $gray-light;
+    border-radius: 10px;
+}
+
+.avatar {
+}

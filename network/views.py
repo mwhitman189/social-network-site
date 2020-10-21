@@ -3,12 +3,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.http import JsonResponse
+import json
 
-from .models import User
+from .models import User, Post, Comment, Like, Follower
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all().reverse()[:10]
+    return render(request, "network/index.html", {'page': 'home', 'posts': list(posts)})
 
 
 def login_view(request):
@@ -29,6 +32,10 @@ def login_view(request):
             })
     else:
         return render(request, "network/login.html")
+
+
+def webpack(request):
+    return render(request, "network/hello_webpack.html")
 
 
 def logout_view(request):
