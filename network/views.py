@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 import json
 
 from .models import User, Post, Comment, Like, Follower
@@ -12,8 +13,11 @@ from .models import User, Post, Comment, Like, Follower
 def index(request):
     """ Display the 10 most recent posts from newest to oldest """
     # Query the most recent 10 posts, and return them in order of newest to oldest
-    posts = Post.objects.all().order_by('timestamp').reverse()[:10]
-    return render(request, "network/index.html", {'page': 'home', 'posts': list(posts)})
+    posts = Post.objects.all().order_by('timestamp').reverse()
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, "network/index.html", {'page': 'home', 'page_obj': page_obj})
 
 
 def login_view(request):
