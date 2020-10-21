@@ -13,10 +13,12 @@
     <div class="posts-container">
         {% for post in posts %}
         <div class="post">
-            <div class="user">
-                <img src="{{post.user.avatar.url}}" />
-                <p class="username">{{post.user.username}}</p>
-            </div>{{post.content}}
+            <img class="avatar"src="{{post.user.avatar.url}}" />
+            <div class="content">
+                <a href="{% url 'index' %}"><p class="user-data">{{post.user.username}}</p></a>
+                <p class="date">{{post.timestamp}}</p>
+                <p class="content">{{post.content}}</p>
+            </div>
         </div>
         {% endfor %}
     </div>

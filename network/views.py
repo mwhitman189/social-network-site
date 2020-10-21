@@ -10,7 +10,9 @@ from .models import User, Post, Comment, Like, Follower
 
 
 def index(request):
-    posts = Post.objects.all().reverse()[:10]
+    """ Display the 10 most recent posts from newest to oldest """
+    # Query the most recent 10 posts, and return them in order of newest to oldest
+    posts = Post.objects.all().order_by('timestamp').reverse()[:10]
     return render(request, "network/index.html", {'page': 'home', 'posts': list(posts)})
 
 
@@ -32,10 +34,6 @@ def login_view(request):
             })
     else:
         return render(request, "network/login.html")
-
-
-def webpack(request):
-    return render(request, "network/hello_webpack.html")
 
 
 def logout_view(request):

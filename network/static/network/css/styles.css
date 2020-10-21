@@ -7,6 +7,7 @@
   height: 100%; }
 
 .post {
+  display: flex;
   height: 100px;
   width: auto;
   background-color: #fff;
@@ -14,3 +15,24 @@
   margin: 5px 0 0 0;
   border: 1px solid #cfcfcf;
   border-radius: 10px; }
+
+.date {
+  font-size: 0.8rem;
+  color: #cfcfcf; }
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0; }
+
+.user-data {
+  font-weight: bold;
+  margin: 0; }
+
+.avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 0 10px 0 0; }
